@@ -50,14 +50,16 @@ FIND_PACKAGE(OpenSim REQUIRED PATHS "${OPENSIM_INSTALL_DIR}")
 #-----------------------------------------------------------------------------
 # Setup Headers to Include
 SET(SIMTK_HEADERS_DIR ${OPENSIM_INSTALL_DIR}/sdk/include/SimTK/simbody)
+SET(CURL_HEADERS_DIR "/usr/local/curl/include/curl") #SPECIFY YOUR CURL PATH*
 SET(OPENSIM_HEADERS_DIR ${OPENSIM_INSTALL_DIR}/sdk/include)
 SET(OPENSIM_TOOLS_HEADERS_DIR ${OPENSIM_INSTALL_DIR}/sdk/include/OpenSim/Tools)
-INCLUDE_DIRECTORIES(${OpenSim_INCLUDE_DIRS} ${SIMTK_HEADERS_DIR} ${OPENSIM_HEADERS_DIR} ${OPENSIM_TOOLS_HEADERS_DIR})
+INCLUDE_DIRECTORIES(${OpenSim_INCLUDE_DIRS} ${SIMTK_HEADERS_DIR} ${OPENSIM_HEADERS_DIR} ${OPENSIM_TOOLS_HEADERS_DIR} ${CURL_HEADERS_DIR})
 #-----------------------------------------------------------------------------
 # Setup Links
 SET(OPENSIM_LIBS_DIR ${OPENSIM_INSTALL_DIR}/lib)
+SET(Curl_LIBRARY "/usr/local/curl/lib/libcurl.4.dylib") #SPECIFY YOUR CURL PATH*
 SET(OPENSIM_DLLS_DIR ${OPENSIM_INSTALL_DIR}/bin)
-LINK_DIRECTORIES( ${OpenSim_LIB_DIR} ${OPENSIM_LIBS_DIR} ${OPENSIM_DLLS_DIR})
+LINK_DIRECTORIES( ${OpenSim_LIB_DIR} ${OPENSIM_LIBS_DIR} ${OPENSIM_DLLS_DIR} ${Curl_LIBRARY})
 #-----------------------------------------------------------------------------
 # Namespace
 ADD_EXECUTABLE(${TARGET} ${SOURCE_FILES})
@@ -65,7 +67,7 @@ ADD_EXECUTABLE(${TARGET} ${SOURCE_FILES})
 
 
 
-TARGET_LINK_LIBRARIES(${TARGET} ${OpenSim_LIBRARIES})
+TARGET_LINK_LIBRARIES(${TARGET} ${OpenSim_LIBRARIES} ${Curl_LIBRARY})
 #-----------------------------------------------------------------------------
 # This block copies the additional files into the running directory
 # For example vtp, obj files. Add to the end for more extentions
