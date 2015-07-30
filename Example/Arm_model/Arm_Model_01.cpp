@@ -9,6 +9,10 @@
 #include <stdio.h>
 #include <OpenSim/OpenSim.h>
 #include <curl/curl.h>
+#include <stddef.h>
+#include <time.h>
+#include <sys/stat.h>
+#include <Python/Python.h>
 
 
 using namespace OpenSim;
@@ -96,7 +100,8 @@ int main()
             Inertia ulnInertia = ulnMass*Inertia::brick(ulnLength, ulnLength/8, 0);
     
         //Build
-    OpenSim::Body *ulna = new OpenSim::Body("ulna", ulnMass, ulnMassCenter, ulnInertia);
+            OpenSim::Body *ulna = new OpenSim::Body("ulna", ulnMass, ulnMassCenter, ulnInertia);
+            ulna->addDisplayGeometry("rulna.vtp");
     
     
     
@@ -107,8 +112,8 @@ int main()
             Inertia radInertia = radMass*Inertia::brick(radLength, radLength/8, 0);
     
         //Build
-    OpenSim::Body *radius = new OpenSim::Body("radius", radMass, radMassCenter, radInertia);
-    
+            OpenSim::Body *radius = new OpenSim::Body("radius", radMass, radMassCenter, radInertia);
+            radius->addDisplayGeometry("rradius.vtp");
     
     
     // ** Humerus ** \\
@@ -118,7 +123,17 @@ int main()
             Inertia humInertia = humMass*Inertia::brick(humLength, humLength/8, 0);
     
         //Build
-    OpenSim::Body *humerus = new OpenSim::Body("humerus", humMass, humMassCenter, humInertia);
+            OpenSim::Body *humerus = new OpenSim::Body("humerus", humMass, humMassCenter, humInertia);
+            humerus->addDisplayGeometry("rhumerus.vtp");
+    
+    
+    
+    // ** Add Bodies ** \\
+    
+    model.addBody(ulna);
+    model.addBody(radius);
+    model.addBody(humerus);
+    
     
     
     
@@ -126,8 +141,15 @@ int main()
 //Create Joints//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     
+//Embed Python//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    Py_Initialize();
+    FILE *fp = fopen("../hello.py", "r+");
     
     
+    PyRun_SimpleFile(fp, "hello.py");
+    
+    Py_Exit(0);
     
     
 }
